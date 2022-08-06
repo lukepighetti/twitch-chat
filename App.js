@@ -101,6 +101,7 @@ export default function App() {
           style={{
             flexDirection: "row",
             borderTopWidth: 1,
+            borderTopColor: "grey",
             alignItems: "center",
             backgroundColor: "white",
           }}
