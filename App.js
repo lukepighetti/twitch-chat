@@ -62,7 +62,9 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ padding: 10 }}>
+      <View
+        style={{ padding: 10, flexDirection: "row", justifyContent: "center" }}
+      >
         {isClientReady ? (
           <Text style={{ fontSize: 18, fontWeight: "500" }}>
             #{defaultChannel}
