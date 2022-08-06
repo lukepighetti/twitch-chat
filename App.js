@@ -41,15 +41,16 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (isClientReady) {
-      /// join channel here when `channel` changes
-      client.on("message", (channel, tags, message, self) => {
-        setChatMessages((prev) => [{ channel, tags, message }, ...prev]);
-      });
+    const messageHandler = (channel, tags, message, self) => {
+      setChatMessages((prev) => [{ channel, tags, message }, ...prev]);
+    };
 
-      console.log("AAAAAAA");
-      /// TODO: clean up subscription here
+    if (isClientReady) {
+      /// TODO: join channel here when `channel` changes
+      client.on("message", messageHandler);
     }
+
+    return () => client.off("message", messageHandler);
   }, [isClientReady]);
 
   const [composedMessage, setComposedMessage] = useState("");
@@ -86,6 +87,7 @@ export default function App() {
           );
         }}
         // TODO: keyExtractor -> find a unique key for each message
+        // maybe timestamp + userid?
       />
       <KeyboardAvoidingView behavior="padding">
         <View
