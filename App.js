@@ -85,7 +85,7 @@ export default function App() {
             </Text>
           );
         }}
-        keyExtractor={(item) => item.tags.id}
+        // TODO: keyExtractor -> find a unique key for each message
       />
       <KeyboardAvoidingView behavior="padding">
         <View
