@@ -5,6 +5,8 @@ import { StyleSheet, Text, View, FlatList, SafeAreaView } from "react-native";
 import tmi from "tmi.js";
 import secrets from "./secrets.json";
 
+const defaultChannel = "lukepighetti";
+
 const client = new tmi.Client({
   options: {
     debug: true,
@@ -14,10 +16,11 @@ const client = new tmi.Client({
     username: secrets.username,
     password: secrets.password,
   },
-  channels: ["lukepighetti"],
+  channels: [defaultChannel],
 });
 
 export default function App() {
+  const [channel, setChannel] = useState(defaultChannel);
   const [isClientReady, setIsClientReady] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -31,6 +34,8 @@ export default function App() {
 
   useEffect(() => {
     if (isClientReady) {
+      /// join channel here when `channel` changes
+
       client.on("message", (channel, tags, message, self) => {
         if (self) return;
         setChatMessages((prev) => [...prev, { channel, tags, message }]);
@@ -43,8 +48,13 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {isClientReady ? <Text>Ready</Text> : <Text>Not ready</Text>}
-      <Text>Open up App.js to start working on your app!</Text>
+      <View style={{ padding: 10 }}>
+        {isClientReady ? (
+          <Text style={{ fontSize: 18, fontWeight: "500" }}>#{channel}</Text>
+        ) : (
+          <Text>Connecting...</Text>
+        )}
+      </View>
       <FlatList
         data={chatMessages}
         renderItem={({ item }) => {
