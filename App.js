@@ -1,6 +1,14 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  SafeAreaView,
+  TextInput,
+  Button,
+} from "react-native";
 
 import tmi from "tmi.js";
 import secrets from "./secrets.json";
@@ -43,6 +51,13 @@ export default function App() {
     }
   }, [isClientReady]);
 
+  const [composedMessage, setComposedMessage] = useState("");
+
+  const submitMessage = () => {
+    client.say(defaultChannel, composedMessage);
+    setComposedMessage("");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ padding: 10 }}>
@@ -69,8 +84,22 @@ export default function App() {
         }}
         keyExtractor={(item) => item.tags.id}
       />
-      <View style={{ borderTopWidth: 1, padding: 20 }}>
-        <Text>Enter text here in future</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          borderTopWidth: 1,
+          alignItems: "center",
+        }}
+      >
+        <TextInput
+          style={{ padding: 20, flex: 1 }}
+          onChangeText={setComposedMessage}
+          onSubmitEditing={submitMessage}
+          value={composedMessage}
+        />
+        <View style={{ marginHorizontal: 10 }}>
+          <Button onPress={submitMessage} title={"Send"}></Button>
+        </View>
       </View>
       <StatusBar style="auto" />
     </SafeAreaView>
