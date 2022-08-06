@@ -20,7 +20,6 @@ const client = new tmi.Client({
 });
 
 export default function App() {
-  const [channel, setChannel] = useState(defaultChannel);
   const [isClientReady, setIsClientReady] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -35,10 +34,8 @@ export default function App() {
   useEffect(() => {
     if (isClientReady) {
       /// join channel here when `channel` changes
-
       client.on("message", (channel, tags, message, self) => {
-        if (self) return;
-        setChatMessages((prev) => [...prev, { channel, tags, message }]);
+        setChatMessages((prev) => [{ channel, tags, message }, ...prev]);
       });
 
       console.log("AAAAAAA");
@@ -50,16 +47,19 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <View style={{ padding: 10 }}>
         {isClientReady ? (
-          <Text style={{ fontSize: 18, fontWeight: "500" }}>#{channel}</Text>
+          <Text style={{ fontSize: 18, fontWeight: "500" }}>
+            #{defaultChannel}
+          </Text>
         ) : (
           <Text>Connecting...</Text>
         )}
       </View>
       <FlatList
+        inverted
         data={chatMessages}
         renderItem={({ item }) => {
           return (
-            <Text style={{ marginVertical: 2 }}>
+            <Text style={{ marginVertical: 2, marginHorizontal: 20 }}>
               <Text style={{ color: "blue", fontWeight: "700" }}>
                 {item.tags["display-name"] ?? item.tags.username}:{" "}
               </Text>
@@ -69,17 +69,25 @@ export default function App() {
         }}
         keyExtractor={(item) => item.tags.id}
       />
+      <View style={{ borderTopWidth: 1, padding: 20 }}>
+        <Text>Enter text here in future</Text>
+      </View>
       <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
 
+// flexDirection: column* | row
+// MainAxisAlignment -> justifyContent:
+//      flex-start* | flex-end | center | space-between | space-around | space-evenly
+// CrossAxisAlignment -> alignItems:
+//      stretch* | flex-start | flex-end | center | baseline
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "flex-start",
+    // alignItems: "stretch",
   },
 });
 
