@@ -111,6 +111,7 @@ export default function App() {
             onSubmitEditing={submitMessage}
             value={composedMessage}
             placeholder="Send a message"
+            autoCorrect={false}
           />
           <View style={{ marginHorizontal: 10 }}>
             <Button onPress={submitMessage} title={"Send"}></Button>
