@@ -76,7 +76,9 @@ export default function App() {
         renderItem={({ item }) => {
           return (
             <Text style={{ marginVertical: 2, marginHorizontal: 20 }}>
-              <Text style={{ color: "blue", fontWeight: "700" }}>
+              <Text
+                style={{ color: item.tags.color ?? "blue", fontWeight: "700" }}
+              >
                 {item.tags["display-name"] ?? item.tags.username}:{" "}
               </Text>
               <Text>{item.message.trim()}</Text>
