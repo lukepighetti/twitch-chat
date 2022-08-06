@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TextInput,
   Button,
+  KeyboardAvoidingView,
 } from "react-native";
 
 import tmi from "tmi.js";
@@ -84,23 +85,26 @@ export default function App() {
         }}
         keyExtractor={(item) => item.tags.id}
       />
-      <View
-        style={{
-          flexDirection: "row",
-          borderTopWidth: 1,
-          alignItems: "center",
-        }}
-      >
-        <TextInput
-          style={{ padding: 20, flex: 1 }}
-          onChangeText={setComposedMessage}
-          onSubmitEditing={submitMessage}
-          value={composedMessage}
-        />
-        <View style={{ marginHorizontal: 10 }}>
-          <Button onPress={submitMessage} title={"Send"}></Button>
+      <KeyboardAvoidingView behavior="padding">
+        <View
+          style={{
+            flexDirection: "row",
+            borderTopWidth: 1,
+            alignItems: "center",
+            backgroundColor: "white",
+          }}
+        >
+          <TextInput
+            style={{ padding: 20, flex: 1 }}
+            onChangeText={setComposedMessage}
+            onSubmitEditing={submitMessage}
+            value={composedMessage}
+          />
+          <View style={{ marginHorizontal: 10 }}>
+            <Button onPress={submitMessage} title={"Send"}></Button>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
       <StatusBar style="auto" />
     </SafeAreaView>
   );
