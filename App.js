@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, SafeAreaView } from "react-native";
 
 import tmi from "tmi.js";
 import secrets from "./secrets.json";
@@ -35,25 +35,32 @@ export default function App() {
         if (self) return;
         setChatMessages((prev) => [...prev, { channel, tags, message }]);
       });
+
+      console.log("AAAAAAA");
+      /// TODO: clean up subscription here
     }
   }, [isClientReady]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {isClientReady ? <Text>Ready</Text> : <Text>Not ready</Text>}
-
       <Text>Open up App.js to start working on your app!</Text>
-
-      <View style={{ height: 100 }} />
       <FlatList
         data={chatMessages}
         renderItem={({ item }) => {
-          return <Text>{item.message}</Text>;
+          return (
+            <Text style={{ marginVertical: 2 }}>
+              <Text style={{ color: "blue", fontWeight: "700" }}>
+                {item.tags["display-name"] ?? item.tags.username}:{" "}
+              </Text>
+              <Text>{item.message.trim()}</Text>
+            </Text>
+          );
         }}
         keyExtractor={(item) => item.tags.id}
       />
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
